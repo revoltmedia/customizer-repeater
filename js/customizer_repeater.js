@@ -134,6 +134,7 @@ function customizer_repeater_refresh_general_control_values() {
             var image_url = jQuery(this).find('.custom-media-url').val();
             var choice = jQuery(this).find('.customizer-repeater-image-choice').val();
             var title = jQuery(this).find('.customizer-repeater-title-control').val();
+            var button_text = jQuery(this).find('.customizer-repeater-button-text-control').val();
             var subtitle = jQuery(this).find('.customizer-repeater-subtitle-control').val();
             var id = jQuery(this).find('.social-repeater-box-id').val();
             if (!id) {
@@ -143,7 +144,7 @@ function customizer_repeater_refresh_general_control_values() {
             var social_repeater = jQuery(this).find('.social-repeater-socials-repeater-colector').val();
             var shortcode = jQuery(this).find('.customizer-repeater-shortcode-control').val();
 
-            if (text !== '' || image_url !== '' || title !== '' || subtitle !== '' || icon_value !== '' || link !== '' || choice !== '' || social_repeater !== '' || shortcode !== '') {
+            if (text !== '' || image_url !== '' || title !== '' || button_text !== '' || subtitle !== '' || icon_value !== '' || link !== '' || choice !== '' || social_repeater !== '' || shortcode !== '') {
                 values.push({
                     'icon_value': (choice === 'customizer_repeater_none' ? '' : icon_value),
                     'text': escapeHtml(text),
@@ -151,6 +152,7 @@ function customizer_repeater_refresh_general_control_values() {
                     'image_url': (choice === 'customizer_repeater_none' ? '' : image_url),
                     'choice': choice,
                     'title': escapeHtml(title),
+                    'button_text': escapeHtml(button_text),
                     'subtitle': escapeHtml(subtitle),
                     'social_repeater': escapeHtml(social_repeater),
                     'id': id,
@@ -169,6 +171,13 @@ jQuery(document).ready(function () {
     'use strict';
     var theme_conrols = jQuery('#customize-theme-controls');
     theme_conrols.on('click', '.customizer-repeater-customize-control-title', function () {
+        jQuery(this).next().slideToggle('medium', function () {
+            if (jQuery(this).is(':visible')){
+                jQuery(this).css('display', 'block');
+            }
+        });
+    });
+    theme_conrols.on('click', '.customizer-repeater-customize-control-button-text', function () {
         jQuery(this).next().slideToggle('medium', function () {
             if (jQuery(this).is(':visible')){
                 jQuery(this).css('display', 'block');
@@ -262,6 +271,9 @@ jQuery(document).ready(function () {
                 /*Remove value from title field*/
                 field.find('.customizer-repeater-title-control').val('');
 
+                /*Remove value from button-text field*/
+                field.find('.customizer-repeater-button-text-control').val('');
+
                 /*Remove value from subtitle field*/
                 field.find('.customizer-repeater-subtitle-control').val('');
 
@@ -290,6 +302,10 @@ jQuery(document).ready(function () {
 
 
     theme_conrols.on('keyup', '.customizer-repeater-title-control', function () {
+        customizer_repeater_refresh_general_control_values();
+    });
+
+    theme_conrols.on('keyup', '.customizer-repeater-button-text-control', function () {
         customizer_repeater_refresh_general_control_values();
     });
 

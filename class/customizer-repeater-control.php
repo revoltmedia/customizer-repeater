@@ -10,6 +10,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 	private $customizer_repeater_image_control = false;
 	private $customizer_repeater_icon_control = false;
 	private $customizer_repeater_title_control = false;
+	private $customizer_repeater_button_text_control = false;
 	private $customizer_repeater_subtitle_control = false;
 	private $customizer_repeater_text_control = false;
 	private $customizer_repeater_link_control = false;
@@ -20,7 +21,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 	public function __construct( $manager, $id, $args = array() ) {
 		parent::__construct( $manager, $id, $args );
 		/*Get options from customizer.php*/
-		$this->boxtitle   = __('Cusomizer Repeater','your-textdomain');
+		$this->boxtitle   = __('Cusomizer Repeater','rm_theme');
 		if ( ! empty( $this->label ) ){
 			$this->boxtitle = $this->label;
 		}
@@ -55,6 +56,10 @@ class Customizer_Repeater extends WP_Customize_Control {
 
 		if ( ! empty( $args['customizer_repeater_repeater_control'] ) ) {
 			$this->customizer_repeater_repeater_control = $args['customizer_repeater_repeater_control'];
+		}
+
+		if ( ! empty( $args['customizer_repeater_button_text_control'] ) ) {
+			$this->customizer_repeater_button_text_control = $args['customizer_repeater_button_text_control'];
 		}
 
 		if ( ! empty( $args['id'] ) ) {
@@ -118,7 +123,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 			} ?>
 			</div>
 		<button type="button" class="button add_field customizer-repeater-new-field">
-			<?php esc_html_e( 'Add new field', 'your-textdomain' ); ?>
+			<?php esc_html_e( 'Add new field', 'rm_theme' ); ?>
 		</button>
 		<?php
 	}
@@ -130,11 +135,11 @@ class Customizer_Repeater extends WP_Customize_Control {
 			foreach($array as $icon){ ?>
 				<div class="customizer-repeater-general-control-repeater-container customizer-repeater-draggable">
 					<div class="customizer-repeater-customize-control-title">
-						<?php esc_html_e( $this->boxtitle, 'your-textdomain' ) ?>
+						<?php esc_html_e( $this->boxtitle, 'rm_theme' ) ?>
 					</div>
 					<div class="customizer-repeater-box-content-hidden">
 						<?php
-						$choice = $image_url = $icon_value = $title = $subtitle = $text = $link = $shortcode = $repeater = '';
+						$choice = $image_url = $icon_value = $title = $subtitle = $text = $link = $shortcode = $repeater = $button_text = '';
 						if(!empty($icon->choice)){
 							$choice = $icon->choice;
 						}
@@ -146,6 +151,9 @@ class Customizer_Repeater extends WP_Customize_Control {
 						}
 						if(!empty($icon->title)){
 							$title = $icon->title;
+						}
+						if(!empty($icon->button_text)){
+							$button_text = $icon->button_text;
 						}
 						if(!empty($icon->subtitle)){
 							$subtitle =  $icon->subtitle;
@@ -175,33 +183,39 @@ class Customizer_Repeater extends WP_Customize_Control {
 						}
 						if($this->customizer_repeater_title_control==true){
 							$this->input_control(array(
-								'label' => __('Title','your-textdomain'),
+								'label' => __('Title','rm_theme'),
 								'class' => 'customizer-repeater-title-control',
 							), $title);
 						}
 						if($this->customizer_repeater_subtitle_control==true){
 							$this->input_control(array(
-								'label' => __('Subtitle','your-textdomain'),
+								'label' => __('Subtitle','rm_theme'),
 								'class' => 'customizer-repeater-subtitle-control',
 							), $subtitle);
 						}
 						if($this->customizer_repeater_text_control==true){
 							$this->input_control(array(
-								'label' => __('Text','your-textdomain'),
+								'label' => __('Text','rm_theme'),
 								'class' => 'customizer-repeater-text-control',
 								'type'  => 'textarea'
 							), $text);
 						}
+						if($this->customizer_repeater_button_text_control==true){
+							$this->input_control(array(
+								'label' => __('Button Text','rm_theme'),
+								'class' => 'customizer-repeater-button-text-control',
+							), $button_text);
+						}
 						if($this->customizer_repeater_link_control){
 							$this->input_control(array(
-								'label' => __('Link','your-textdomain'),
+								'label' => __('Link','rm_theme'),
 								'class' => 'customizer-repeater-link-control',
 								'sanitize_callback' => 'esc_url'
 							), $link);
 						}
 						if($this->customizer_repeater_shortcode_control==true){
 							$this->input_control(array(
-								'label' => __('Shortcode','your-textdomain'),
+								'label' => __('Shortcode','rm_theme'),
 								'class' => 'customizer-repeater-shortcode-control',
 							), $shortcode);
 						}
@@ -215,7 +229,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 						<button type="button" class="social-repeater-general-control-remove-field button" <?php if ( $it == 0 ) {
 							echo 'style="display:none;"';
 						} ?>>
-							<?php esc_html_e( 'Delete field', 'your-textdomain' ); ?>
+							<?php esc_html_e( 'Delete field', 'rm_theme' ); ?>
 						</button>
 
 					</div>
@@ -227,7 +241,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 		} else { ?>
 			<div class="customizer-repeater-general-control-repeater-container">
 				<div class="customizer-repeater-customize-control-title">
-					<?php esc_html_e( $this->boxtitle, 'your-textdomain' ) ?>
+					<?php esc_html_e( $this->boxtitle, 'rm_theme' ) ?>
 				</div>
 				<div class="customizer-repeater-box-content-hidden">
 					<?php
@@ -242,32 +256,38 @@ class Customizer_Repeater extends WP_Customize_Control {
 					}
 					if ( $this->customizer_repeater_title_control == true ) {
 						$this->input_control( array(
-							'label' => __( 'Title', 'your-textdomain' ),
+							'label' => __( 'Title', 'rm_theme' ),
 							'class' => 'customizer-repeater-title-control',
+						) );
+					}
+					if ( $this->customizer_repeater_button_text_control == true ) {
+						$this->input_control( array(
+							'label' => __( 'Button Text', 'rm_theme' ),
+							'class' => 'customizer-repeater-button-text-control',
 						) );
 					}
 					if ( $this->customizer_repeater_subtitle_control == true ) {
 						$this->input_control( array(
-							'label' => __( 'Subtitle', 'your-textdomain' ),
+							'label' => __( 'Subtitle', 'rm_theme' ),
 							'class' => 'customizer-repeater-subtitle-control'
 						) );
 					}
 					if ( $this->customizer_repeater_text_control == true ) {
 						$this->input_control( array(
-							'label' => __( 'Text', 'your-textdomain' ),
+							'label' => __( 'Text', 'rm_theme' ),
 							'class' => 'customizer-repeater-text-control',
 							'type'  => 'textarea'
 						) );
 					}
 					if ( $this->customizer_repeater_link_control == true ) {
 						$this->input_control( array(
-							'label' => __( 'Link', 'your-textdomain' ),
+							'label' => __( 'Link', 'rm_theme' ),
 							'class' => 'customizer-repeater-link-control'
 						) );
 					}
 					if ( $this->customizer_repeater_shortcode_control == true ) {
 						$this->input_control( array(
-							'label' => __( 'Shortcode', 'your-textdomain' ),
+							'label' => __( 'Shortcode', 'rm_theme' ),
 							'class' => 'customizer-repeater-shortcode-control'
 						) );
 					}
@@ -276,7 +296,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 					} ?>
 					<input type="hidden" class="social-repeater-box-id">
 					<button type="button" class="social-repeater-general-control-remove-field button" style="display:none;">
-						<?php esc_html_e( 'Delete field', 'your-textdomain' ); ?>
+						<?php esc_html_e( 'Delete field', 'rm_theme' ); ?>
 					</button>
 				</div>
 			</div>
@@ -299,13 +319,13 @@ class Customizer_Repeater extends WP_Customize_Control {
 	private function icon_picker_control($value = '', $show = ''){ ?>
 		<div class="social-repeater-general-control-icon" <?php if( $show === 'customizer_repeater_image' || $show === 'customizer_repeater_none' ) { echo 'style="display:none;"'; } ?>>
             <span class="customize-control-title">
-                <?php esc_html_e('Icon','your-textdomain'); ?>
+                <?php esc_html_e('Icon','rm_theme'); ?>
             </span>
 			<span class="description customize-control-description">
                 <?php
                 echo sprintf(
-	                __( 'Note: Some icons may not be displayed here. You can see the full list of icons at %1$s', 'your-textdomain' ),
-	                sprintf( '<a href="http://fontawesome.io/icons/" rel="nofollow">%s</a>', esc_html__( 'http://fontawesome.io/icons/', 'your-textdomain' ) )
+	                __( 'Note: Some icons may not be displayed here. You can see the full list of icons at %1$s', 'rm_theme' ),
+	                sprintf( '<a href="http://fontawesome.io/icons/" rel="nofollow">%s</a>', esc_html__( 'http://fontawesome.io/icons/', 'rm_theme' ) )
                 ); ?>
             </span>
 			<div class="input-group icp-container">
@@ -319,22 +339,22 @@ class Customizer_Repeater extends WP_Customize_Control {
 	private function image_control($value = '', $show = ''){ ?>
 		<div class="customizer-repeater-image-control" <?php if( $show === 'customizer_repeater_icon' || $show === 'customizer_repeater_none' ) { echo 'style="display:none;"'; } ?>>
             <span class="customize-control-title">
-                <?php esc_html_e('Image','your-textdomain')?>
+                <?php esc_html_e('Image','rm_theme')?>
             </span>
 			<input type="text" class="widefat custom-media-url" value="<?php echo esc_attr( $value ); ?>">
-			<input type="button" class="button button-primary customizer-repeater-custom-media-button" value="<?php esc_html_e('Upload Image','your-textdomain'); ?>" />
+			<input type="button" class="button button-primary customizer-repeater-custom-media-button" value="<?php esc_html_e('Upload Image','rm_theme'); ?>" />
 		</div>
 		<?php
 	}
 
 	private function icon_type_choice($value='customizer_repeater_icon'){ ?>
 		<span class="customize-control-title">
-            <?php esc_html_e('Image type','your-textdomain');?>
+            <?php esc_html_e('Image type','rm_theme');?>
         </span>
 		<select class="customizer-repeater-image-choice">
-			<option value="customizer_repeater_icon" <?php selected($value,'customizer_repeater_icon');?>><?php esc_html_e('Icon','your-textdomain'); ?></option>
-			<option value="customizer_repeater_image" <?php selected($value,'customizer_repeater_image');?>><?php esc_html_e('Image','your-textdomain'); ?></option>
-			<option value="customizer_repeater_none" <?php selected($value,'customizer_repeater_none');?>><?php esc_html_e('None','your-textdomain'); ?></option>
+			<option value="customizer_repeater_icon" <?php selected($value,'customizer_repeater_icon');?>><?php esc_html_e('Icon','rm_theme'); ?></option>
+			<option value="customizer_repeater_image" <?php selected($value,'customizer_repeater_image');?>><?php esc_html_e('Image','rm_theme'); ?></option>
+			<option value="customizer_repeater_none" <?php selected($value,'customizer_repeater_none');?>><?php esc_html_e('None','rm_theme'); ?></option>
 		</select>
 		<?php
 	}
@@ -342,7 +362,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 	private function repeater_control($value = ''){
 		$social_repeater = array();
 		$show_del        = 0; ?>
-		<span class="customize-control-title"><?php esc_html_e( 'Social icons', 'your-textdomain' ); ?></span>
+		<span class="customize-control-title"><?php esc_html_e( 'Social icons', 'rm_theme' ); ?></span>
 		<?php
 		if(!empty($value)) {
 			$social_repeater = json_decode( html_entity_decode( $value ), true );
@@ -356,15 +376,15 @@ class Customizer_Repeater extends WP_Customize_Control {
 					</div>
 
 					<input type="text" class="customizer-repeater-social-repeater-link"
-					       placeholder="<?php esc_html_e( 'Link', 'your-textdomain' ); ?>">
+					       placeholder="<?php esc_html_e( 'Link', 'rm_theme' ); ?>">
 					<input type="hidden" class="customizer-repeater-social-repeater-id" value="">
 					<button class="social-repeater-remove-social-item" style="display:none">
-						<?php esc_html_e( 'X', 'your-textdomain' ); ?>
+						<?php esc_html_e( 'X', 'rm_theme' ); ?>
 					</button>
 				</div>
 				<input type="hidden" id="social-repeater-socials-repeater-colector" class="social-repeater-socials-repeater-colector" value=""/>
 			</div>
-			<button class="social-repeater-add-social-item"><?php esc_html_e( 'Add icon', 'your-textdomain' ); ?></button>
+			<button class="social-repeater-add-social-item"><?php esc_html_e( 'Add icon', 'rm_theme' ); ?></button>
 			<?php
 		} else { ?>
 			<div class="customizer-repeater-social-repeater">
@@ -377,7 +397,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 							<span class="input-group-addon"></span>
 						</div>
 						<input type="text" class="customizer-repeater-social-repeater-link"
-						       placeholder="<?php esc_html_e( 'Link', 'your-textdomain' ); ?>"
+						       placeholder="<?php esc_html_e( 'Link', 'rm_theme' ); ?>"
 						       value="<?php if ( ! empty( $social_icon['link'] ) ) {
 							       echo esc_url( $social_icon['link'] );
 						       } ?>">
@@ -388,7 +408,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 						<button class="social-repeater-remove-social-item"
 						        style="<?php if ( $show_del == 1 ) {
 							        echo "display:none";
-						        } ?>"><?php esc_html_e( 'X', 'your-textdomain' ); ?></button>
+						        } ?>"><?php esc_html_e( 'X', 'rm_theme' ); ?></button>
 					</div>
 					<?php
 				} ?>
@@ -396,7 +416,7 @@ class Customizer_Repeater extends WP_Customize_Control {
 				       class="social-repeater-socials-repeater-colector"
 				       value="<?php echo esc_textarea( html_entity_decode( $value ) ); ?>" />
 			</div>
-			<button class="social-repeater-add-social-item"><?php esc_html_e( 'Add icon', 'your-textdomain' ); ?></button>
+			<button class="social-repeater-add-social-item"><?php esc_html_e( 'Add icon', 'rm_theme' ); ?></button>
 			<?php
 		}
 	}
